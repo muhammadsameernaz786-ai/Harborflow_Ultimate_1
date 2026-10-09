@@ -1,189 +1,54 @@
+#Task 3
+def calculate_quote(distance, weight, service_code):
+    #Basic components for the quote and subtotal
+    base_charge = 45.00
+    distance = float(distance)
+    weight = float(weight)
+    service_code = service_code.upper()
+    
+    # Conditions for the service code
+    if service_code == "S":
+        service_multiplier = 1.0
+    elif service_code == "X":
+        service_multiplier = 1.25
+    elif service_code == "P":
+        service_multiplier = 1.6
+    else:
+        print("Invalid service code. Please enter S, X, or P.")
+        return None
 
-# TASK 7: Produce the weekly dispatch report
+    # Calculation for subtotal and delivery quote
+    subtotal = base_charge + (distance * 6.5) + (weight * 4)
+    quote = subtotal * service_multiplier
+    return quote
 
-def produce_weekly_report(deliveries_str, target):
-    """
-    Processes 7 daily delivery counts and a target value.
-    For ties, the LAST day with the highest/lowest value is reported.
-    """
+# Printing values for the quote and subtotal
+distance = float(input("Distance (km): "))
+weight = float(input("Weight (kg): "))
+service_code = input("Service code: ")
 
-    days = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-    ]
+quote = calculate_quote(distance, weight, service_code)
+if quote is not None:
+    print(f"Delivery quote: {quote:.2f} SEK")
 
-    # Convert comma-separated string into integers
-    parts = deliveries_str.split(",")
-    deliveries = []
+#Task 4 - Consolidate parcel labels
+# list, distinct label once, preserving the order, 
+# splitting, loops, normalization, memberships checks, ordered output
 
-    for part in parts:
-        deliveries.append(int(part.strip()))
+scanned_labels = input("Scanned labels: ")
+scanned_labels = scanned_labels.split(",")
 
-    total_deliveries = 0
-    days_meeting_target = 0
+unique_labels = []
 
-    highest_val = deliveries[0]
-    highest_day_idx = 0
+for label in scanned_labels:
+    label = label.upper()
+    label = label.strip()
+    if label not in unique_labels:
+        unique_labels.append(label)
 
-    lowest_val = deliveries[0]
-    lowest_day_idx = 0
+print(f"Unique load list:")
 
-    for i in range(len(deliveries)):
-        value = deliveries[i]
+for number, label in enumerate(unique_labels, start = 1):
+    print(f"{number}. {label}")
 
-        total_deliveries += value
-
-        if value >= target:
-            days_meeting_target += 1
-
-        # >= keeps the LAST occurrence when there is a tie
-        if value >= highest_val:
-            highest_val = value
-            highest_day_idx = i
-
-        # <= keeps the LAST occurrence when there is a tie
-        if value <= lowest_val:
-            lowest_val = value
-            lowest_day_idx = i
-
-    average_per_day = total_deliveries / len(deliveries)
-
-    print("\nWeekly dispatch report")
-    print(f"Total deliveries: {total_deliveries}")
-    print(f"Average per day: {average_per_day:.2f}")
-    print(f"Highest day: {days[highest_day_idx]} ({highest_val})")
-    print(f"Lowest day: {days[lowest_day_idx]} ({lowest_val})")
-    print(f"Days meeting target: {days_meeting_target}")
-
-
-# TASK 8: Input Validation Functions
-
-def get_valid_menu_option(max_option=8):
-    """Validates main menu selections."""
-
-    while True:
-        try:
-            choice = int(input("Select service: "))
-
-            if 1 <= choice <= max_option:
-                return choice
-
-            print(f"Error: Select a service from 1 to {max_option}.")
-
-        except ValueError:
-            print(f"Error: Select a service from 1 to {max_option}.")
-
-
-def get_valid_positive_float(prompt):
-    """Validates numeric values that must be greater than 0."""
-
-    while True:
-        try:
-            value = float(input(prompt))
-
-            if value > 0:
-                return value
-
-            print("Error: Value must be greater than zero.")
-
-        except ValueError:
-            print("Error: Value must be greater than zero.")
-
-
-def get_valid_service_code():
-    """Validates service codes S, X, or P."""
-
-    while True:
-        code = input("Service code: ").strip().upper()
-
-        if code in ["S", "X", "P"]:
-            return code
-
-        print("Error: Service code must be S, X or P.")
-
-
-def get_valid_non_negative_int(prompt):
-    """Validates integers that must be 0 or greater."""
-
-    while True:
-        try:
-            value = int(input(prompt))
-
-            if value >= 0:
-                return value
-
-            print("Error: Value must be non-negative.")
-
-        except ValueError:
-            print("Error: Value must be non-negative.")
-
-
-def get_valid_weekly_deliveries():
-    """Validates exactly 7 non-negative delivery counts."""
-
-    while True:
-        raw_input = input(
-            "Completed deliveries "
-            "(Monday to Sunday, separated by commas): "
-        )
-
-        parts = raw_input.split(",")
-
-        if len(parts) != 7:
-            print("Error: Weekly report requires 7 delivery counts.")
-            continue
-
-        valid = True
-
-        for part in parts:
-            part = part.strip()
-
-            try:
-                value = int(part)
-
-                if value < 0:
-                    valid = False
-                    break
-
-            except ValueError:
-                valid = False
-                break
-
-        if valid:
-            return raw_input
-
-        print("Error: Weekly report requires 7 non-negative integers.")
-
-
-def get_valid_capacity_weights():
-    """Validates parcel weights. All weights must be greater than 0."""
-
-    while True:
-        raw_input = input("Parcel weights (kg): ")
-        parts = raw_input.split(",")
-
-        valid = True
-
-        for part in parts:
-            try:
-                weight = float(part.strip())
-
-                if weight <= 0:
-                    valid = False
-                    break
-
-            except ValueError:
-                valid = False
-                break
-
-        if valid:
-            return raw_input
-
-        print("Error: All parcel weights must be greater than zero.")
-
-
+print(f"Total unique parcels: {len(unique_labels)}")
