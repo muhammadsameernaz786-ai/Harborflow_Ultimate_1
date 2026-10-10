@@ -17,7 +17,7 @@ def produce_weekly_report(deliveries_str, target):
         "Sunday"
     ]
 
-    # Convert comma-separated string into integers
+    # Just working
     parts = deliveries_str.split(",")
     deliveries = []
 
