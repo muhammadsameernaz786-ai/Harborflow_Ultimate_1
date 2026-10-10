@@ -1,4 +1,46 @@
 
+# TASK 9 - Compare delivery scenarios
+
+def compare_service_scenarios():
+    # Reuse Task 8 validation
+    distance = get_valid_positive_float("Distance (km): ")
+    weight = get_valid_positive_float("Weight (kg): ")
+
+    # Reuse Task 3 calculation function
+    standard_price = calculate_quote(distance, weight, "S")
+    express_price = calculate_quote(distance, weight, "X")
+    priority_price = calculate_quote(distance, weight, "P")
+
+    print("Service comparison")
+    print(f"Standard: {standard_price:.2f} SEK")
+    print(f"Express: {express_price:.2f} SEK")
+    print(f"Priority: {priority_price:.2f} SEK")
+
+    # Find cheapest service
+    cheapest_service = "Standard"
+    cheapest_price = standard_price
+
+    if express_price < cheapest_price:
+        cheapest_service = "Express"
+        cheapest_price = express_price
+
+    if priority_price < cheapest_price:
+        cheapest_service = "Priority"
+
+    # Find most expensive service
+    most_expensive_service = "Standard"
+    most_expensive_price = standard_price
+
+    if express_price > most_expensive_price:
+        most_expensive_service = "Express"
+        most_expensive_price = express_price
+
+    if priority_price > most_expensive_price:
+        most_expensive_service = "Priority"
+
+    print(f"Cheapest service: {cheapest_service}")
+    print(f"Most expensive service: {most_expensive_service}")
+
 # TASK 7 - Produce the weekly dispatch report
 
 def produce_weekly_report(deliveries_str, target):
@@ -321,6 +363,10 @@ def task_6_function():
 def task_7_function():
     # Placeholder for task 7
     print("Running: Produce weekly dispatch report")
+
+def task_8_function():
+    # Placeholder for task 9
+    print("Running: Compare service scenarios")
 
  # Task2
 
